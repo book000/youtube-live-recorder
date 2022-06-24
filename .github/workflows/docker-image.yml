@@ -11,5 +11,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      working-directory: recorder/
+      working-directory: src/
       run: docker build . --file Dockerfile --tag ${{ github.event.repository.name }}:$(date +%s)

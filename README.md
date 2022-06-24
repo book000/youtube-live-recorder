@@ -5,7 +5,7 @@ Works with Docker (Docker Compose).
 
 ## Configuration
 
-The recording container is set in `recorder.env` file.
+When using Docker Compose, settings file is `recorder.env`.
 
 Either `CHANNEL` or `PLAYLIST` is required.
 
