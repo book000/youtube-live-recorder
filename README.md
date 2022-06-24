@@ -13,3 +13,11 @@ Either `CHANNEL` or `PLAYLIST` is required.
 - `CHANNEL` (optional): Specify the ID of the channel to be recorded.
 - `PLAYLIST` (optional): Specify the ID of the playlist to be recorded.
 - `TITLE_FILTER` (optional): When filtering with the title name, specify the textbook to filter.
+
+## Warning / Disclaimer
+
+The developer is not responsible for any problems caused by the user using this project.
+
+## License
+
+The license for this project is [MIT License](LICENSE).
