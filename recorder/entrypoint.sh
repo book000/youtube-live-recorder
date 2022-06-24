@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check if TARGET variable is set
+if [ -z "$TARGET" ]; then
+  echo "TARGET variable is not set"
+  exit 1
+fi
+
 # define URL variable
 if [[ ! -z "$CHANNEL" ]]; then
   URL="https://www.youtube.com/channel/$CHANNEL/live"
