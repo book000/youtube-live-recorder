@@ -1,0 +1,3 @@
+recorder.env
+recorder/data/*
+!recorder/data/.gitkeep

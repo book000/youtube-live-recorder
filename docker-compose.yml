@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  recorder:
+    build: ./recorder
+    volumes:
+      - data:/data
+    env_file:
+      - recorder.env
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/
