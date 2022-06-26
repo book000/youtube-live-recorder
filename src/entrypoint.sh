@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set +x
+
 # check if TARGET variable is set
 if [[ -z "$TARGET" ]]; then
   echo "TARGET variable is not set"
@@ -44,6 +46,6 @@ while :; do
   yt-dlp -U;
 
   # shellcheck disable=2086
-  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native $TITLE_FILTER_ARG --download-archive "$RECORDED_FILE" -f bestvideo+bestaudio --add-metadata -o "$OUTPUT_DIR" $URL
+  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native $TITLE_FILTER_ARG --download-archive "$RECORDED_FILE" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "$OUTPUT_DIR" "$URL"
   sleep 5
 done
