@@ -2,16 +2,22 @@ version: '3.8'
 
 services:
   recorder:
-    image: book000/youtube-live-recorder
+    image: book000/youtube-live-recorder:v1.4.0
     volumes:
-      - data:/data
+      - type: bind
+        source: ./data
+        target: /data
     env_file:
       - recorder.env
 
-volumes:
-  data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./data/
+  watch-new-movie:
+    image: book000/youtube-live-recorder-watch-new-movie:v1.4.0
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+
+  discord-deliver:
+    image: book000/discord-deliver:v1.2.0
+    env_file:
+      - discord-deliver.env
