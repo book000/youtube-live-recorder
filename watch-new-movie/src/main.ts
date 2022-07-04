@@ -67,12 +67,19 @@ function getMovies(): Movie[] {
 
 ;(async () => {
   await main().catch(async (err) => {
+    console.error(err)
     await axios
       .post('http://discord-deliver', {
         embed: {
           title: `Error`,
           description: `${err.message}`,
           color: 0xff0000,
+          fields: [
+            {
+              name: 'Stacktrace',
+              value: err.stack,
+            },
+          ],
         },
       })
       .catch(() => null)
