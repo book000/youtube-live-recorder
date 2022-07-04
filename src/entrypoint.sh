@@ -42,8 +42,23 @@ if [[ ! -f $RECORDED_FILE ]]; then
   xargs -I {} echo youtube {} < ids.txt >> "$RECORDED_FILE"
 fi
 
+ytdlpVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
+echo "yt-dlp version: $ytdlpVersion"
+
+i=0
 while :; do
-  yt-dlp -U;
+  i=$((i+1))
+  # yt-dlp updater
+  if [[ $((i%120)) -eq 0 ]]; then
+    # 120*5 = 600 seconds = 10 minutes
+    nowVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ "$nowVersion" != "$ytdlpVersion" ]]; then
+      yt-dlp -U
+      echo "yt-dlp version updated: $ytdlpVersion -> $nowVersion"
+      ytdlpVersion=$nowVersion
+    fi
+  fi
 
   # shellcheck disable=2086
   yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native $TITLE_FILTER_ARG --download-archive "$RECORDED_FILE" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "$OUTPUT_DIR" "$URL"
