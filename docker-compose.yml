@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   recorder:
-    image: book000/youtube-live-recorder:v1.4.1
+    image: book000/youtube-live-recorder:v1.4.2
     volumes:
       - type: bind
         source: ./data
@@ -11,7 +11,7 @@ services:
       - recorder.env
 
   watch-new-movie:
-    image: book000/youtube-live-recorder-watch-new-movie:v1.4.1
+    image: book000/youtube-live-recorder-watch-new-movie:v1.4.2
     volumes:
       - type: bind
         source: ./data
