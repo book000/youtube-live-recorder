@@ -53,7 +53,7 @@ function getMovies(): Movie[] {
   for (const dir of dataDirectorys) {
     const files = fs
       .readdirSync(parent + dir)
-      .filter((file) => fs.statSync(parent + file).isDirectory())
+      .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isDirectory())
       .filter((file) => file.endsWith('.mp4'))
     for (const file of files) {
       movies.push({
