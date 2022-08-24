@@ -46,9 +46,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: ${{ runner.os }}-buildx-${{ fromJson(matrix.target).directory }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-buildx-${{ fromJson(matrix.target).directory }}-
 
       - name: Login to ${{ env.REGISTRY }}
         if: github.event_name != 'release'
