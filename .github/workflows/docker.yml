@@ -23,7 +23,7 @@ env:
 
 jobs:
   job:
-    name: Push Docker image
+    name: Docker build (${{ fromJson(matrix.target).directory }})
     runs-on: ubuntu-latest
 
     strategy:
