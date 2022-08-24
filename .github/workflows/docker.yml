@@ -1,7 +1,7 @@
 # 任意のレジストリに複数の Docker image を公開orビルドする。
 # master/mainのプッシュ時、プルリクの作成・更新時、リリース時に動作する。
 
-name: Docker Publish
+name: Docker
 
 on:
   push:
@@ -22,7 +22,7 @@ env:
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
-  publish:
+  job:
     name: Push Docker image
     runs-on: ubuntu-latest
 
