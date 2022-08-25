@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   recorder:
-    image: book000/youtube-live-recorder:v1.4.2
+    image: book000/youtube-live-recorder:1.4.4
     volumes:
       - type: bind
         source: ./data
