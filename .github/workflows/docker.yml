@@ -51,7 +51,7 @@ jobs:
             ${{ runner.os }}-buildx-${{ fromJson(matrix.target).directory }}-
 
       - name: Login to ${{ env.REGISTRY }}
-        if: github.event_name != 'release'
+        if: github.event_name == 'release'
         uses: docker/login-action@v2.0.0
         with:
           registry: ${{ env.REGISTRY }}
@@ -75,7 +75,7 @@ jobs:
         uses: docker/build-push-action@v3.1.1
         with:
           context: ${{ fromJson(matrix.target).directory }}
-          push: ${{ github.event_name != 'release' }}
+          push: ${{ github.event_name == 'release' }}
           platforms: ${{ env.PLATFORMS }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
