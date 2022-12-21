@@ -11,6 +11,7 @@ async function main() {
   const notified = fs.existsSync('/data/notified.json')
     ? JSON.parse(fs.readFileSync('/data/notified.json').toString())
     : []
+  const init = notified.length === 0
   for (const movie of movies) {
     const key = movie.dirname + '/' + movie.filename
     if (notified.includes(key)) {
@@ -19,6 +20,9 @@ async function main() {
     console.log(movie)
     notified.push(key)
 
+    if (init) {
+      continue
+    }
     await axios
       .post('http://discord-deliver', {
         embed: {
@@ -27,12 +31,12 @@ async function main() {
           fields: [
             {
               name: 'Directory',
-              value: movie.dirname,
+              value: `\`${movie.dirname}\``,
               inline: true,
             },
             {
               name: 'File',
-              value: movie.filename,
+              value: `\`${movie.filename}\``,
               inline: true,
             },
           ],
@@ -54,6 +58,8 @@ function getMovies(): Movie[] {
     const files = fs
       .readdirSync(parent + dir)
       .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
+      .filter((file) => !file.includes('.f140'))
+      .filter((file) => !file.includes('.f248'))
       .filter((file) => file.endsWith('.mp4'))
     for (const file of files) {
       movies.push({
