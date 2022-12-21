@@ -11,7 +11,7 @@ services:
       - recorder.env
 
   watch-new-movie:
-    image: book000/youtube-live-recorder-watch-new-movie:1.4.4
+    image: book000/youtube-live-recorder-watch-new-movie:1.4.7
     volumes:
       - type: bind
         source: ./data
