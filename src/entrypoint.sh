@@ -3,48 +3,55 @@
 set +x
 
 # check if TARGET variable is set
-if [[ -z "$TARGET" ]]; then
+if [[ -z "${TARGET}" ]]; then
   echo "TARGET variable is not set"
   exit 1
 fi
 
 # define URL variable
-if [[ -n "$CHANNEL" ]]; then
-  URL="https://www.youtube.com/channel/$CHANNEL/live"
+if [[ -n "${CHANNEL}" ]]; then
+  URL="https://www.youtube.com/channel/${CHANNEL}/live"
 fi
-if [[ -n "$PLAYLIST" ]]; then
-  URL="https://www.youtube.com/playlist?list=$PLAYLIST"
+if [[ -n "${PLAYLIST}" ]]; then
+  URL="https://www.youtube.com/playlist?list=${PLAYLIST}"
 fi
 
-if [[ -z "$URL" ]]; then
+if [[ -z "${URL}" ]]; then
   echo "Please provide a URL to a channel or playlist"
   exit 1
 fi
 
 # check define title filter variable
-if [[ -n "$TITLE_FILTER" ]]; then
-  TITLE_FILTER_ARG="--match-title $TITLE_FILTER"
+if [[ -n "${TITLE_FILTER}" ]]; then
+  TITLE_FILTER_ARG="--match-title ${TITLE_FILTER}"
 fi
 
-RECORDED_FILE="/data/recorded/$TARGET"
-if [[ ! -d $(dirname "$RECORDED_FILE") ]]; then
-  mkdir -p "$(dirname "$RECORDED_FILE")"
+RECORDED_FILE="/data/recorded/${TARGET}"
+if [[ ! -d $(dirname "${RECORDED_FILE}") ]]; then
+  mkdir -p "$(dirname "${RECORDED_FILE}")"
 fi
 
-OUTPUT_DIR="/data/$TARGET/%(title)s.%(ext)s"
-if [[ ! -d $(dirname "$OUTPUT_DIR") ]]; then
-  mkdir -p "$(dirname "$OUTPUT_DIR")"
+# Put the part file generated during download in the part directory
+# Move only mp4 file after download completes
+OUTPUT_DIR="/data/${TARGET}/part/%(title)s.%(ext)s"
+if [[ ! -d $(dirname "${OUTPUT_DIR}") ]]; then
+  mkdir -p "$(dirname "${OUTPUT_DIR}")"
 fi
+MOVE_DIR="/data/${TARGET}/"
 
-if [[ ! -f $RECORDED_FILE ]]; then
+if [[ ! -f ${RECORDED_FILE} ]]; then
   echo "No recorded file found, add all videos to the recorded file"
-  yt-dlp -q --flat-playlist --print-to-file id ids.txt "$URL"
-  xargs -I {} echo youtube {} < ids.txt >> "$RECORDED_FILE"
+  yt-dlp -q --flat-playlist --print-to-file id ids.txt "${URL}"
+  xargs -I {} echo youtube {} < ids.txt >> "${RECORDED_FILE}"
 fi
 
+# shellcheck disable=SC2312
 ytdlpVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-echo "yt-dlp version: $ytdlpVersion"
+echo "yt-dlp version: ${ytdlpVersion}"
+
+# Check if it's streaming every 5 seconds
+# Check for yt-dlp updates every 10 minutes
 
 i=0
 while :; do
@@ -52,15 +59,19 @@ while :; do
   # yt-dlp updater
   if [[ $((i%120)) -eq 0 ]]; then
     # 120*5 = 600 seconds = 10 minutes
+    # shellcheck disable=SC2312
     nowVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [[ "$nowVersion" != "$ytdlpVersion" ]]; then
+    if [[ "${nowVersion}" != "${ytdlpVersion}" ]]; then
       yt-dlp -U
-      echo "yt-dlp version updated: $ytdlpVersion -> $nowVersion"
-      ytdlpVersion=$nowVersion
+      echo "yt-dlp version updated: ${ytdlpVersion} -> ${nowVersion}"
+      ytdlpVersion=${nowVersion}
     fi
   fi
 
-  # shellcheck disable=2086
-  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native $TITLE_FILTER_ARG --download-archive "$RECORDED_FILE" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "$OUTPUT_DIR" "$URL"
+  # shellcheck disable=SC2086
+  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
+
+  # Move the file to the parent directory
+  mv -v "$(dirname "${OUTPUT_DIR}")/*.mp4" "${MOVE_DIR}"
   sleep 5
 done
