@@ -62,7 +62,8 @@ while :; do
     # shellcheck disable=SC2312
     nowVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     if [[ "${nowVersion}" != "${ytdlpVersion}" ]]; then
-      yt-dlp -U
+      curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+      chmod a+rx /usr/local/bin/yt-dlp
       echo "yt-dlp version updated: ${ytdlpVersion} -> ${nowVersion}"
       ytdlpVersion=${nowVersion}
     fi
