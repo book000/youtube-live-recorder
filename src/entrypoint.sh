@@ -73,6 +73,7 @@ while :; do
   yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
 
   # Move the file to the parent directory
-  mv -v "$(dirname "${OUTPUT_DIR}")/*.mp4" "${MOVE_DIR}"
+  # shellcheck disable=SC2046
+  mv -v $(dirname "${OUTPUT_DIR}")/*.mp4 "${MOVE_DIR}"
   sleep 5
 done
