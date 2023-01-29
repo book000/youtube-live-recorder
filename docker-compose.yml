@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   recorder:
-    image: book000/youtube-live-recorder:v1.6.4
+    image: book000/youtube-live-recorder:latest
     volumes:
       - type: bind
         source: ./data
@@ -11,13 +11,13 @@ services:
       - recorder.env
 
   watch-new-movie:
-    image: book000/youtube-live-recorder-watch-new-movie:1.6.1
+    image: book000/youtube-live-recorder-watch-new-movie:latest
     volumes:
       - type: bind
         source: ./data
         target: /data
 
   discord-deliver:
-    image: book000/discord-deliver:v1.2.0
+    image: book000/discord-deliver:latest
     env_file:
       - discord-deliver.env
