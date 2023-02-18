@@ -34,7 +34,7 @@ jobs:
       targets: >-
         [
           { imageName: "book000/youtube-live-recorder", context: ".", file: "Dockerfile", packageName: "youtube-live-recorder" },
-          { imageName: "book000/youtube-live-recorder-watch-new-movie", context: "watch-new-movie", file: "Dockerfile", packageName: "youtube-live-recorder-watch-new-movie" }
+          { imageName: "book000/youtube-live-recorder-watch-new-movie", context: "watch-new-movie", file: "watch-new-movie/Dockerfile", packageName: "youtube-live-recorder-watch-new-movie" }
         ]
       registry: registry.hub.docker.com
     secrets:
