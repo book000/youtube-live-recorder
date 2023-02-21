@@ -47,8 +47,10 @@ fi
 
 # shellcheck disable=SC2312
 ytdlpVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+chmod a+rx /usr/local/bin/yt-dlp
 echo "yt-dlp version: ${ytdlpVersion}"
+yt-dlp --version
 
 # Check if it's streaming every 5 seconds
 # Check for yt-dlp updates every 10 minutes
