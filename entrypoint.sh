@@ -46,10 +46,8 @@ if [[ ! -f ${RECORDED_FILE} ]]; then
 fi
 
 # shellcheck disable=SC2312
-ytdlpVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
-chmod a+rx /usr/local/bin/yt-dlp
-echo "yt-dlp version: ${ytdlpVersion}"
+yt-dlp --version
+yt-dlp -U
 yt-dlp --version
 
 # Check if it's streaming every 5 seconds
@@ -61,14 +59,7 @@ while :; do
   # yt-dlp updater
   if [[ $((i%120)) -eq 0 ]]; then
     # 120*5 = 600 seconds = 10 minutes
-    # shellcheck disable=SC2312
-    nowVersion=$(curl --silent "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [[ "${nowVersion}" != "${ytdlpVersion}" ]]; then
-      curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
-      chmod a+rx /usr/local/bin/yt-dlp
-      echo "yt-dlp version updated: ${ytdlpVersion} -> ${nowVersion}"
-      ytdlpVersion=${nowVersion}
-    fi
+    yt-dlp -U
   fi
 
   # shellcheck disable=SC2086

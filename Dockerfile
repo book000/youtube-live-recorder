@@ -7,7 +7,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# yt-dlpはentrypoint.shでダウンロードする
+# renovate: datasource=github-tags depName=yt-dlp/yt-dlp versioning=loose
+ENV YT_DLP_VERSION=2023.02.17
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/download/${YT_DLP_VERSION}/yt-dlp -o /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp
 
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
