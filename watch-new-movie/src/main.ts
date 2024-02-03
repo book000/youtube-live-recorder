@@ -60,6 +60,7 @@ function getMovies(): Movie[] {
       .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
       .filter((file) => !file.includes('.f140'))
       .filter((file) => !file.includes('.f248'))
+      .filter((file) => !file.includes('.f299'))
       .filter((file) => file.endsWith('.mp4'))
     for (const file of files) {
       movies.push({
