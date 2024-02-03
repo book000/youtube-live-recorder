@@ -65,8 +65,8 @@ while :; do
   # shellcheck disable=SC2086
   yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
 
-  # Move the file to the parent directory
+  # Move the file to the parent directory (but f140, f248, f299 files are not move)
   # shellcheck disable=SC2046
-  mv -v $(dirname "${OUTPUT_DIR}")/*.mp4 "${MOVE_DIR}"
+  find $(dirname "${OUTPUT_DIR}") -name "*.mp4" -not -name "*.f*.mp4" -exec mv {} "${MOVE_DIR}" \;
   sleep 5
 done
