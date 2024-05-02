@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import axios from 'axios'
 
 interface Movie {
@@ -8,7 +8,7 @@ interface Movie {
 
 async function main() {
   const movies = getMovies()
-  const notified = fs.existsSync('/data/notified.json')
+  const notified: string[] = fs.existsSync('/data/notified.json')
     ? JSON.parse(fs.readFileSync('/data/notified.json').toString())
     : []
   const init = notified.length === 0
@@ -27,7 +27,7 @@ async function main() {
       .post('http://discord-deliver', {
         embed: {
           title: `Downloaded movie - youtube-live-recorder`,
-          color: 0x00ff00,
+          color: 0x00_ff_00,
           fields: [
             {
               name: 'Directory',
@@ -73,18 +73,18 @@ function getMovies(): Movie[] {
 }
 
 ;(async () => {
-  await main().catch(async (err) => {
-    console.error(err)
+  await main().catch(async (error: unknown) => {
+    console.error(error)
     await axios
       .post('http://discord-deliver', {
         embed: {
           title: `Error`,
-          description: `${err.message}`,
-          color: 0xff0000,
+          description: (error as Error).message,
+          color: 0xff_00_00,
           fields: [
             {
               name: 'Stacktrace',
-              value: err.stack,
+              value: (error as Error).stack,
             },
           ],
         },
