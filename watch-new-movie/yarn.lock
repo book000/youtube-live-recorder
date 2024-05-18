@@ -25,12 +25,12 @@
     js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
-"@book000/eslint-config@1.6.14":
-  version "1.6.14"
-  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.6.14.tgz#920f87dae6c49b10201a537b9716a87e3c112dc8"
-  integrity sha512-bADiw8nUbEuMRlYfuU8lN401mYa27Cf/W7YYSntOqQPREvZ/f3piOh85UEO4rE4UFOLmnciXUgPI2Oq14JUc2A==
+"@book000/eslint-config@1.6.16":
+  version "1.6.16"
+  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.6.16.tgz#351b0cb0efc9dc10d973468d4e030e650df74753"
+  integrity sha512-qmjqGqWUy0u3uRvYezzD+j8f7zrxJvTJ4Ye7uLjl3JvtYWMTqYnlsTuFeyuSSGjfF9sUxFkimWLJsmHoV+V8oA==
   dependencies:
-    "@eslint/eslintrc" "3.0.2"
+    "@eslint/eslintrc" "3.1.0"
     "@typescript-eslint/parser" "7.9.0"
     eslint-config-prettier "9.1.0"
     eslint-plugin-unicorn "53.0.0"
@@ -56,10 +56,10 @@
   resolved "https://registry.yarnpkg.com/@eslint-community/regexpp/-/regexpp-4.10.0.tgz#548f6de556857c8bb73bbee70c35dc82a2e74d63"
   integrity sha512-Cu96Sd2By9mCNTx2iyKOmq10v22jUVQv0lQnlGNy16oE9589yE+QADPbrMGCkA51cKZSg3Pu/aTJVTGfL/qjUA==
 
-"@eslint/eslintrc@3.0.2", "@eslint/eslintrc@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.0.2.tgz#36180f8e85bf34d2fe3ccc2261e8e204a411ab4e"
-  integrity sha512-wV19ZEGEMAC1eHgrS7UQPqsdEiCIbTKTasEfcXAigzoXICcqZSjBZEHlZwNVvKg6UBCjSlos84XiLqsRJnIcIg==
+"@eslint/eslintrc@3.1.0", "@eslint/eslintrc@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.1.0.tgz#dbd3482bfd91efa663cbe7aa1f506839868207b6"
+  integrity sha512-4Bfj15dVJdoy3RfZmmo86RK1Fwzn6SstsvK9JS+BaVKqC6QQQQyXekNaC+g+LKNgkQ+2VhGAzm6hO40AhMR3zQ==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
@@ -71,10 +71,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@eslint/eslintrc@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.1.0.tgz#dbd3482bfd91efa663cbe7aa1f506839868207b6"
-  integrity sha512-4Bfj15dVJdoy3RfZmmo86RK1Fwzn6SstsvK9JS+BaVKqC6QQQQyXekNaC+g+LKNgkQ+2VhGAzm6hO40AhMR3zQ==
+"@eslint/eslintrc@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-3.0.2.tgz#36180f8e85bf34d2fe3ccc2261e8e204a411ab4e"
+  integrity sha512-wV19ZEGEMAC1eHgrS7UQPqsdEiCIbTKTasEfcXAigzoXICcqZSjBZEHlZwNVvKg6UBCjSlos84XiLqsRJnIcIg==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
