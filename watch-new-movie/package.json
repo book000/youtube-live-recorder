@@ -21,7 +21,7 @@
     "fix:prettier": "prettier --write src"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.7.99",
+    "@book000/eslint-config": "1.7.100",
     "@types/node": "22.9.3",
     "axios": "1.7.7",
     "eslint": "9.15.0",
