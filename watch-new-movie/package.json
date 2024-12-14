@@ -24,7 +24,7 @@
     "@book000/eslint-config": "1.7.112",
     "@types/node": "22.10.2",
     "axios": "1.7.9",
-    "eslint": "9.16.0",
+    "eslint": "9.17.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-n": "17.15.0",
