@@ -21,8 +21,8 @@
     "fix:prettier": "prettier --write src"
   },
   "devDependencies": {
-    "@book000/eslint-config": "1.7.150",
-    "@types/node": "22.15.2",
+    "@book000/eslint-config": "1.8.59",
+    "@types/node": "22.15.3",
     "axios": "1.9.0",
     "eslint": "9.25.1",
     "eslint-config-standard": "17.1.0",
@@ -34,5 +34,6 @@
     "ts-node-dev": "2.0.0",
     "typescript": "5.8.3",
     "yarn-run-all": "3.1.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
