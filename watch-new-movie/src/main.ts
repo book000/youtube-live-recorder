@@ -6,6 +6,31 @@ interface Movie {
   filename: string
 }
 
+function getMovies(): Movie[] {
+  const movies: Movie[] = []
+
+  const parent = '/data/'
+  const dataDirectories = fs
+    .readdirSync(parent)
+    .filter((file) => fs.statSync(parent + file).isDirectory())
+  for (const dir of dataDirectories) {
+    const files = fs
+      .readdirSync(parent + dir)
+      .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
+      .filter((file) => !file.includes('.f140'))
+      .filter((file) => !file.includes('.f248'))
+      .filter((file) => !file.includes('.f299'))
+      .filter((file) => file.endsWith('.mp4'))
+    for (const file of files) {
+      movies.push({
+        dirname: dir,
+        filename: file,
+      })
+    }
+  }
+  return movies
+}
+
 async function main() {
   const movies = getMovies()
   const notified: string[] = fs.existsSync('/data/notified.json')
@@ -45,31 +70,6 @@ async function main() {
       .catch(() => null)
   }
   fs.writeFileSync('/data/notified.json', JSON.stringify(notified))
-}
-
-function getMovies(): Movie[] {
-  const movies: Movie[] = []
-
-  const parent = '/data/'
-  const dataDirectorys = fs
-    .readdirSync(parent)
-    .filter((file) => fs.statSync(parent + file).isDirectory())
-  for (const dir of dataDirectorys) {
-    const files = fs
-      .readdirSync(parent + dir)
-      .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
-      .filter((file) => !file.includes('.f140'))
-      .filter((file) => !file.includes('.f248'))
-      .filter((file) => !file.includes('.f299'))
-      .filter((file) => file.endsWith('.mp4'))
-    for (const file of files) {
-      movies.push({
-        dirname: dir,
-        filename: file,
-      })
-    }
-  }
-  return movies
 }
 
 ;(async () => {
