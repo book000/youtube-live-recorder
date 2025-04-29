@@ -10,10 +10,10 @@ function getMovies(): Movie[] {
   const movies: Movie[] = []
 
   const parent = '/data/'
-  const dataDirectorys = fs
+  const dataDirectories = fs
     .readdirSync(parent)
     .filter((file) => fs.statSync(parent + file).isDirectory())
-  for (const dir of dataDirectorys) {
+  for (const dir of dataDirectories) {
     const files = fs
       .readdirSync(parent + dir)
       .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
