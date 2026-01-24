@@ -25,3 +25,11 @@
 - ログに機密情報を出力しない。
 
 ## リポジトリ固有
+- **config_files**: {'recorder.env': 'Runtime configuration (CHANNEL, PLAYLIST, TARGET, TITLE_FILTER)', 'docker-compose.yml': 'Docker Compose setup for containerized execution'}
+**workflow_ci:**
+  - nodejs-ci.yml
+  - shell-ci.yml
+  - hadolint-ci.yml
+  - docker.yml
+  - add-reviewer.yml
+- **note**: Docker-first architecture for production deployment
