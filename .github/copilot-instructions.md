@@ -34,7 +34,7 @@
 - パッケージマネージャー: Yarn 1.22.22
 - コンテナ: Docker + Docker Compose
 - 外部ツール: yt-dlp 2025.12.08, ffmpeg
-- HTTP クライアント: axios 1.13.2
+- HTTP クライアント: axios（ランタイム依存）
 - 開発ツール: ts-node 10.9.2, ts-node-dev 2.0.0
 - Lint/Format: ESLint 9.39.2, Prettier 3.8.1
 - ESLint 共有設定: @book000/eslint-config 1.12.40
@@ -63,10 +63,13 @@ yarn dev
 # ビルド
 yarn build
 
+# アプリケーション実行（ts-node 経由、本番相当設定）
+yarn build
+
 # コンパイル済みコードを実行
 yarn start
 
-# TypeScript コンパイル（完全チェック）
+# TypeScript をコンパイルしてビルド（完全チェック）
 yarn compile
 
 # TypeScript コンパイルチェック（出力なし）
@@ -144,7 +147,7 @@ docker compose down
 
 - このプロジェクトは Docker Hub にデプロイされる（`book000/youtube-live-recorder` および `book000/youtube-live-recorder-watch-new-movie`）。
 - Renovate による自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない。
-- モノレポ構造: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（外部）の 3 サービス。
+- モノレポ構造: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（Docker コンテナサービス）の 3 サービス。
 - Node.js バージョンは `.node-version` で固定（24.13.0）。
 - yt-dlp のバージョンは `Dockerfile` の ENV コメントで Renovate が管理。
 - GitHub Actions ワークフロー:

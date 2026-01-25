@@ -49,7 +49,7 @@
 - **パッケージマネージャー**: Yarn 1.22.22
 - **コンテナ**: Docker + Docker Compose
 - **外部ツール**: yt-dlp 2025.12.08, ffmpeg
-- **HTTP クライアント**: axios 1.13.2
+- **HTTP クライアント**: axios（ランタイム依存）
 - **開発ツール**: ts-node 10.9.2, ts-node-dev 2.0.0
 - **Lint/Format**: ESLint 9.39.2, Prettier 3.8.1
 
@@ -68,10 +68,13 @@ yarn dev
 # ビルド
 yarn build
 
+# ts-node でアプリケーションを実行（ソースから直接実行）
+yarn build
+
 # コンパイル済みコードを実行
 yarn start
 
-# TypeScript コンパイル（完全チェック）
+# ビルド（TypeScript をコンパイル）
 yarn compile
 
 # TypeScript コンパイルチェック（出力なし）

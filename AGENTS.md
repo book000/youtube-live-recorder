@@ -101,7 +101,7 @@
 
 ## リポジトリ固有
 
-- **モノレポ構造**: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（外部）の 3 サービス
+- **モノレポ構造**: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（Docker コンテナサービス）の 3 サービス
 - **Docker Hub デプロイ**: 2 つのイメージ（`book000/youtube-live-recorder` と `book000/youtube-live-recorder-watch-new-movie`）
 - **Renovate**: 自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない
 - **Node.js バージョン固定**: `.node-version` で 24.13.0 に固定
