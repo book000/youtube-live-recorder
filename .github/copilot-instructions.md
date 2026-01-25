@@ -148,7 +148,7 @@ docker compose down
 - このプロジェクトは Docker Hub にデプロイされる（`book000/youtube-live-recorder` および `book000/youtube-live-recorder-watch-new-movie`）。
 - Renovate による自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない。
 - モノレポ構造: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（Docker コンテナサービス）の 3 サービス。
-- Node.js バージョンは `.node-version` で固定（24.13.0）。
+- Node.js バージョンは `watch-new-movie/.node-version` で固定（24.13.0）。
 - yt-dlp のバージョンは `Dockerfile` の ENV コメントで Renovate が管理。
 - GitHub Actions ワークフロー:
   - `nodejs-ci.yml` - Node.js CI（book000/templates の再利用可能ワークフローを使用）

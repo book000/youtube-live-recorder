@@ -249,7 +249,7 @@ youtube-live-recorder/
 - `README.md` - 主な機能や使用方法の変更時
 - `watch-new-movie/package.json` - 依存関係やスクリプトの変更時
 - `docker-compose.yml` - サービス構成の変更時
-- `.node-version` - Node.js バージョンの変更時
+- `watch-new-movie/.node-version` - Node.js バージョンの変更時
 - `.github/copilot-instructions.md` - 開発プロセスやルールの変更時
 - このファイル（`CLAUDE.md`） - 作業方針やルールの変更時
 
@@ -297,7 +297,7 @@ youtube-live-recorder/
 
 - **Docker Hub デプロイ**: `book000/youtube-live-recorder` と `book000/youtube-live-recorder-watch-new-movie` の 2 つのイメージ
 - **Renovate**: 自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない
-- **Node.js バージョン固定**: `.node-version` で 24.13.0 に固定
+- **Node.js バージョン固定**: `watch-new-movie/.node-version` で 24.13.0 に固定
 - **yt-dlp バージョン管理**: `Dockerfile` の ENV コメントで Renovate が管理（現在 2025.12.08）
 - **GitHub Actions ワークフロー**:
   - `nodejs-ci.yml` - book000/templates の再利用可能ワークフローを使用

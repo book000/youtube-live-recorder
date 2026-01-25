@@ -113,7 +113,7 @@ docker compose down
 ## 既知の制約
 
 - **テストフレームワーク**: 現在未設定。品質保証は TypeScript 厳格モード、ESLint、Prettier、GitHub Actions CI により実施。
-- **Node.js バージョン固定**: `.node-version` で 24.13.0 に固定。
+- **Node.js バージョン固定**: `watch-new-movie/.node-version` で 24.13.0 に固定。
 - **yt-dlp バージョン管理**: `Dockerfile` の ENV コメントで Renovate が管理（現在 2025.12.08）。
 
 ## リポジトリ固有

@@ -104,13 +104,14 @@
 - **モノレポ構造**: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（Docker コンテナサービス）の 3 サービス
 - **Docker Hub デプロイ**: 2 つのイメージ（`book000/youtube-live-recorder` と `book000/youtube-live-recorder-watch-new-movie`）
 - **Renovate**: 自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない
-- **Node.js バージョン固定**: `.node-version` で 24.13.0 に固定
+- **Node.js バージョン固定**: `watch-new-movie/.node-version` で 24.13.0 に固定
 - **yt-dlp バージョン管理**: `Dockerfile` の ENV コメントで Renovate が管理
 - **GitHub Actions**:
   - `nodejs-ci.yml` - Node.js CI
   - `docker.yml` - Docker イメージビルド
   - `shell-ci.yml` - Shellcheck 検証
   - `hadolint-ci.yml` - Dockerfile Lint 検証
+  - `add-reviewer.yml` - 自動レビュアー割り当て
 - **watch-new-movie の動作**:
   - `/data/` ディレクトリの MP4 ファイルを監視
   - 中間フォーマットファイル（.f140, .f248, .f299）を除外
@@ -125,7 +126,7 @@
 - `README.md` - 主な機能や使用方法の変更時
 - `watch-new-movie/package.json` - 依存関係やスクリプトの変更時
 - `docker-compose.yml` - サービス構成の変更時
-- `.node-version` - Node.js バージョンの変更時
+- `watch-new-movie/.node-version` - Node.js バージョンの変更時
 
 ## 参考リンク
 
