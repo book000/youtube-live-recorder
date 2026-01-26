@@ -60,16 +60,13 @@ yarn install
 # 開発モード（自動リロード）
 yarn dev
 
-# ビルド
-yarn build
-
-# アプリケーション実行（ts-node 経由、本番相当設定）
+# アプリケーション実行（ts-node でソースコードを直接実行）
 yarn build
 
 # コンパイル済みコードを実行
 yarn start
 
-# TypeScript をコンパイルしてビルド（完全チェック）
+# ビルド（TypeScript をコンパイル）
 yarn compile
 
 # TypeScript コンパイルチェック（出力なし）
@@ -140,14 +137,14 @@ docker compose down
 - `README.md` - 主な機能や使用方法の変更時
 - `watch-new-movie/package.json` - 依存関係やスクリプトの変更時
 - `docker-compose.yml` - サービス構成の変更時
-- `.node-version` - Node.js バージョンの変更時
+- `watch-new-movie/.node-version` - Node.js バージョンの変更時
 - このファイル（`.github/copilot-instructions.md`） - 開発プロセスやルールの変更時
 
 ## リポジトリ固有
 
 - このプロジェクトは Docker Hub にデプロイされる（`book000/youtube-live-recorder` および `book000/youtube-live-recorder-watch-new-movie`）。
 - Renovate による自動依存関係更新が有効。Renovate が作成した PR に対して追加コミットや更新を行わない。
-- モノレポ構造: `recorder`（Python/Bash）、`watch-new-movie`（Node.js）、`discord-deliver`（Docker コンテナサービス）の 3 サービス。
+- モノレポ構造: このリポジトリには `recorder`（Python/Bash）と `watch-new-movie`（Node.js）の 2 サービスが含まれる。Discord 通知用の `discord-deliver` は外部 Docker イメージとして `docker-compose.yml` から利用する（本リポジトリにはソースコードは含まれない）。
 - Node.js バージョンは `watch-new-movie/.node-version` で固定（24.13.0）。
 - yt-dlp のバージョンは `Dockerfile` の ENV コメントで Renovate が管理。
 - GitHub Actions ワークフロー:

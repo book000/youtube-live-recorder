@@ -65,10 +65,7 @@ yarn install
 # 開発モード（自動リロード）
 yarn dev
 
-# ビルド
-yarn build
-
-# ts-node でアプリケーションを実行（ソースから直接実行）
+# アプリケーション実行（ts-node でソースコードを直接実行）
 yarn build
 
 # コンパイル済みコードを実行
@@ -118,7 +115,7 @@ docker compose down
 
 ## リポジトリ固有
 
-- **モノレポ構造**: 3 つのサービス（`recorder`, `watch-new-movie`, `discord-deliver`）
+- **モノレポ構造**: 2 つのサービス（`recorder`, `watch-new-movie`）＋外部依存サービス（`discord-deliver` Docker イメージ）
 - **Docker Hub デプロイ**: 2 つのイメージ
   - `book000/youtube-live-recorder` - Python/Bash 録画サービス
   - `book000/youtube-live-recorder-watch-new-movie` - Node.js 通知サービス

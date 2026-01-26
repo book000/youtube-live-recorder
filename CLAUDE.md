@@ -112,7 +112,7 @@ yarn install
 # 開発モード（自動リロード）
 yarn dev
 
-# アプリケーション起動（ts-node 実行。ビルド/コンパイルは yarn compile）
+# アプリケーション実行（ts-node でソースコードを直接実行）
 yarn build
 
 # コンパイル済みコードを実行
@@ -166,10 +166,10 @@ docker compose down
 
 ### アーキテクチャサマリー
 
-- **モノレポ構造**: 3 つのサービスで構成
+- **モノレポ構造**: 2 つのサービス（`recorder`, `watch-new-movie`）＋外部依存サービス（`discord-deliver` Docker イメージ）
   - `recorder`（Python/Bash）: yt-dlp と ffmpeg を使用した録画サービス
   - `watch-new-movie`（Node.js/TypeScript）: 録画完了を検知し Discord 通知
-  - `discord-deliver`（Discord メッセージ配信用 Docker コンテナサービス）: Discord メッセージ配信
+  - `discord-deliver`（Discord メッセージ配信用 Docker コンテナサービス）: 外部 Docker イメージとして利用、本リポジトリにはソースコードは含まれない
 - **Docker Compose** でオーケストレーション
 - **GitHub Actions** で CI/CD を自動化
 
