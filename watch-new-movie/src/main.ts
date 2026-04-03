@@ -10,6 +10,14 @@ interface Movie {
 }
 
 /**
+ * エラー通知に利用する文字列化済みの情報です。
+ */
+interface ErrorDetails {
+  message: string
+  stacktrace: string
+}
+
+/**
  * 通知対象となる MP4 ファイルの一覧を取得します。
  *
  * @returns 動画ファイル情報の一覧
@@ -37,6 +45,26 @@ function getMovies(): Movie[] {
     }
   }
   return movies
+}
+
+/**
+ * Discord 通知向けに例外情報を文字列へ正規化します。
+ *
+ * @param err 発生した例外
+ * @returns 通知に利用するエラー情報
+ */
+function getErrorDetails(err: unknown): ErrorDetails {
+  if (err instanceof Error) {
+    return {
+      message: err.message,
+      stacktrace: err.stack ?? '(no stacktrace)',
+    }
+  }
+
+  return {
+    message: String(err),
+    stacktrace: '(no stacktrace)',
+  }
 }
 
 /**
@@ -85,17 +113,19 @@ async function main() {
 
 ;(async () => {
   await main().catch(async (err: unknown) => {
+    const errorDetails = getErrorDetails(err)
+
     console.error(err)
     await axios
       .post('http://discord-deliver', {
         embed: {
           title: `Error`,
-          description: (err as Error).message,
+          description: errorDetails.message,
           color: 0xff_00_00,
           fields: [
             {
               name: 'Stacktrace',
-              value: (err as Error).stack,
+              value: errorDetails.stacktrace,
             },
           ],
         },
