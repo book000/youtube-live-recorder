@@ -1,11 +1,19 @@
 import fs from 'node:fs'
 import axios from 'axios'
 
+/**
+ * 監視対象の動画ファイル情報です。
+ */
 interface Movie {
   dirname: string
   filename: string
 }
 
+/**
+ * 通知対象となる MP4 ファイルの一覧を取得します。
+ *
+ * @returns 動画ファイル情報の一覧
+ */
 function getMovies(): Movie[] {
   const movies: Movie[] = []
 
@@ -31,6 +39,9 @@ function getMovies(): Movie[] {
   return movies
 }
 
+/**
+ * 未通知の動画を検出し、Discord へ通知します。
+ */
 async function main() {
   const movies = getMovies()
   const notified: string[] = fs.existsSync('/data/notified.json')
@@ -73,18 +84,18 @@ async function main() {
 }
 
 ;(async () => {
-  await main().catch(async (error: unknown) => {
-    console.error(error)
+  await main().catch(async (err: unknown) => {
+    console.error(err)
     await axios
       .post('http://discord-deliver', {
         embed: {
           title: `Error`,
-          description: (error as Error).message,
+          description: (err as Error).message,
           color: 0xff_00_00,
           fields: [
             {
               name: 'Stacktrace',
-              value: (error as Error).stack,
+              value: (err as Error).stack,
             },
           ],
         },
