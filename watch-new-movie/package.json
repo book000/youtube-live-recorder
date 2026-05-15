@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@book000/eslint-config": "1.14.31",
-    "@types/node": "24.12.3",
+    "@types/node": "24.12.4",
     "eslint": "10.3.0",
     "eslint-config-standard": "17.1.0",
     "eslint-plugin-import": "2.32.0",
