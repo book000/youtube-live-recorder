@@ -13,4 +13,4 @@ on:
 jobs:
   hadolint:
     name: hadolint
-    uses: book000/templates/.github/workflows/reusable-hadolint-ci.yml@efed8dba8320df4c5c04656891b9aa0865cc28fd # master
+    uses: book000/templates/.github/workflows/reusable-hadolint-ci.yml@0a5ddc8f0cefde1a7fd8b1d49d62d42620eb753e # master
