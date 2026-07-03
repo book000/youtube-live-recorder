@@ -78,7 +78,7 @@ jobs:
     name: Docker CI
     needs: approval-gate
     if: always() && needs.approval-gate.result == 'success' && (github.event.action != 'closed' || github.event.pull_request.merged == true)
-    uses: book000/templates/.github/workflows/reusable-docker.yml@1d3c112ba6b8e5ac13c24a8e3892f92b98ea35ac # master
+    uses: book000/templates/.github/workflows/reusable-docker.yml@master
     with:
       targets: >-
         [
@@ -86,6 +86,7 @@ jobs:
           { imageName: "book000/youtube-live-recorder-watch-new-movie", context: "watch-new-movie", file: "watch-new-movie/Dockerfile", packageName: "youtube-live-recorder-watch-new-movie" }
         ]
       registry: registry.hub.docker.com
+      allow-unsafe-pr-checkout: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
