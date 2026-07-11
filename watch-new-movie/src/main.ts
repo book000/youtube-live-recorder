@@ -13,17 +13,17 @@ function getMovies(): Movie[] {
   const dataDirectories = fs
     .readdirSync(parent)
     .filter((file) => fs.statSync(parent + file).isDirectory())
-  for (const dir of dataDirectories) {
+  for (const directory of dataDirectories) {
     const files = fs
-      .readdirSync(parent + dir)
-      .filter((file) => fs.statSync(`${parent}${dir}/${file}`).isFile())
+      .readdirSync(parent + directory)
+      .filter((file) => fs.statSync(`${parent}${directory}/${file}`).isFile())
       .filter((file) => !file.includes('.f140'))
       .filter((file) => !file.includes('.f248'))
       .filter((file) => !file.includes('.f299'))
       .filter((file) => file.endsWith('.mp4'))
     for (const file of files) {
       movies.push({
-        dirname: dir,
+        dirname: directory,
         filename: file,
       })
     }
@@ -36,7 +36,7 @@ async function main() {
   const notified: string[] = fs.existsSync('/data/notified.json')
     ? JSON.parse(fs.readFileSync('/data/notified.json').toString())
     : []
-  const init = notified.length === 0
+  const isInitialRun = notified.length === 0
   for (const movie of movies) {
     const key = movie.dirname + '/' + movie.filename
     if (notified.includes(key)) {
@@ -45,11 +45,11 @@ async function main() {
     console.log(movie)
     notified.push(key)
 
-    if (init) {
+    if (isInitialRun) {
       continue
     }
-    await axios
-      .post('http://discord-deliver', {
+    try {
+      await axios.post('http://discord-deliver', {
         embed: {
           title: `Downloaded movie - youtube-live-recorder`,
           color: 0x00_ff_00,
@@ -67,16 +67,20 @@ async function main() {
           ],
         },
       })
-      .catch(() => null)
+    } catch {
+      // Discord への通知失敗は握りつぶし、通知済み管理を継続する
+    }
   }
   fs.writeFileSync('/data/notified.json', JSON.stringify(notified))
 }
 
 ;(async () => {
-  await main().catch(async (error: unknown) => {
+  try {
+    await main()
+  } catch (error) {
     console.error(error)
-    await axios
-      .post('http://discord-deliver', {
+    try {
+      await axios.post('http://discord-deliver', {
         embed: {
           title: `Error`,
           description: (error as Error).message,
@@ -89,6 +93,8 @@ async function main() {
           ],
         },
       })
-      .catch(() => null)
-  })
+    } catch {
+      // Discord へのエラー通知自体が失敗しても、元のエラーはログ済みのため無視する
+    }
+  }
 })()
