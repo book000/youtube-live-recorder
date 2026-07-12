@@ -36,7 +36,7 @@ async function main() {
   const notified: string[] = fs.existsSync('/data/notified.json')
     ? JSON.parse(fs.readFileSync('/data/notified.json').toString())
     : []
-  const init = notified.length === 0
+  const isInitialRun = notified.length === 0
   for (const movie of movies) {
     const key = movie.dirname + '/' + movie.filename
     if (notified.includes(key)) {
@@ -45,11 +45,11 @@ async function main() {
     console.log(movie)
     notified.push(key)
 
-    if (init) {
+    if (isInitialRun) {
       continue
     }
-    await axios
-      .post('http://discord-deliver', {
+    try {
+      await axios.post('http://discord-deliver', {
         embed: {
           title: `Downloaded movie - youtube-live-recorder`,
           color: 0x00_ff_00,
@@ -67,16 +67,20 @@ async function main() {
           ],
         },
       })
-      .catch(() => null)
+    } catch {
+      // 通知配信の失敗は無視する
+    }
   }
   fs.writeFileSync('/data/notified.json', JSON.stringify(notified))
 }
 
 ;(async () => {
-  await main().catch(async (error: unknown) => {
+  try {
+    await main()
+  } catch (error: unknown) {
     console.error(error)
-    await axios
-      .post('http://discord-deliver', {
+    try {
+      await axios.post('http://discord-deliver', {
         embed: {
           title: `Error`,
           description: (error as Error).message,
@@ -89,6 +93,8 @@ async function main() {
           ],
         },
       })
-      .catch(() => null)
-  })
+    } catch {
+      // 通知配信の失敗は無視する
+    }
+  }
 })()
