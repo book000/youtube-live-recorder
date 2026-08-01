@@ -1,0 +1,3 @@
+recorder.env
+discord-deliver.env
+*.env
