@@ -84,8 +84,9 @@ docker compose down         # 停止
 ## リポジトリ固有
 
 - **Docker Hub**: `book000/youtube-live-recorder`（recorder）と `book000/youtube-live-recorder-watch-new-movie`（Node.js）の 2 イメージを公開。
-- **Node.js バージョン**: `watch-new-movie/.node-version` で固定（現在 24.18.0）。
-- **yt-dlp バージョン**: ルート `Dockerfile` の `ENV YT_DLP_VERSION` を Renovate が管理（現在 2026.07.04）。
+- **Node.js バージョン**: `watch-new-movie/.node-version` で固定。
+- **yt-dlp バージョン**: ルート `Dockerfile` の `ENV YT_DLP_VERSION` を Renovate が管理。
+- **Deno バージョン**: ルート `Dockerfile` の `ENV DENO_VERSION` を Renovate が管理。yt-dlp が JavaScript ランタイムとして使用する。
 - **GitHub Actions**:
   - `nodejs-ci.yml`: `book000/templates` の再利用可能ワークフローで `watch-new-movie` をビルド。
   - `docker.yml`: 両 Docker イメージのビルド/公開。

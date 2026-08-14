@@ -42,7 +42,7 @@ MOVE_DIR="/data/${TARGET}/"
 
 if [[ ! -f ${RECORDED_FILE} ]]; then
   echo "No recorded file found, add all videos to the recorded file"
-  yt-dlp -q --flat-playlist --print-to-file id ids.txt "${URL}"
+  yt-dlp -q --flat-playlist --js-runtimes deno --print-to-file id ids.txt "${URL}"
   xargs -I {} echo youtube {} < ids.txt >> "${RECORDED_FILE}"
 fi
 
@@ -64,7 +64,7 @@ while :; do
   fi
 
   # shellcheck disable=SC2086
-  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
+  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native --js-runtimes deno ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
 
   # Move the file to the parent directory (but f140, f248, f299 files are not move)
   # shellcheck disable=SC2046
