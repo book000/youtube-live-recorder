@@ -33,7 +33,8 @@ fi
 
 # Put the part file generated during download in the part directory
 # Move only mp4 file after download completes
-OUTPUT_DIR="/data/${TARGET}/part/%(title)s.%(ext)s"
+OUTPUT_FILENAME_PATTERN="${OUTPUT_FILENAME_PATTERN:-%(title)s.%(ext)s}"
+OUTPUT_DIR="/data/${TARGET}/part/${OUTPUT_FILENAME_PATTERN}"
 if [[ ! -d $(dirname "${OUTPUT_DIR}") ]]; then
   mkdir -p "$(dirname "${OUTPUT_DIR}")"
 fi

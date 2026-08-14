@@ -13,6 +13,7 @@ Either `CHANNEL` or `PLAYLIST` is required.
 - `CHANNEL` (optional): Specify the ID of the channel to be recorded.
 - `PLAYLIST` (optional): Specify the ID of the playlist to be recorded.
 - `TITLE_FILTER` (optional): When filtering with the title name, specify the textbook to filter.
+- `OUTPUT_FILENAME_PATTERN` (optional): Specify the yt-dlp output template for the recorded filename (e.g. `%(title)s-%(id)s.%(ext)s` to avoid overwriting recordings with the same title). Defaults to `%(title)s.%(ext)s`.
 
 ## Warning / Disclaimer
 
