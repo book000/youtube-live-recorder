@@ -52,7 +52,7 @@ function calculateJapaneseRatio(text) {
  * that English identifiers inside code snippets do not dilute the ratio.
  * The body is skipped if it is empty (or only whitespace).
  *
- * @param title - PR title
+ * @param title - PR title (may be `null`/`undefined`/empty)
  * @param body - PR body (may be `null`/`undefined`/empty)
  * @returns An array of human-readable failure messages. Empty if both the
  *   title and body pass the check.

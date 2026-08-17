@@ -51,3 +51,18 @@ test('an empty body is skipped, not treated as a failure', () => {
   const failures = checkPullRequestLanguage('fix: correct pagination bug', '')
   assert.deepEqual(failures, [])
 })
+
+test('null/undefined title and body are treated as empty, not a failure', () => {
+  assert.deepEqual(checkPullRequestLanguage(null, null), [])
+  assert.deepEqual(checkPullRequestLanguage(undefined, undefined), [])
+})
+
+test('the Japanese ratio threshold is inclusive at exactly 0.8', () => {
+  // 8 Japanese characters + 2 Latin characters = ratio of exactly 0.8.
+  const atThreshold = checkPullRequestLanguage('あいうえおかきくAB', '')
+  assert.equal(atThreshold.length, 1)
+
+  // 7 Japanese characters + 3 Latin characters = ratio just below 0.8.
+  const belowThreshold = checkPullRequestLanguage('あいうえおかきABC', '')
+  assert.deepEqual(belowThreshold, [])
+})
