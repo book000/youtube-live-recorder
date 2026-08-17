@@ -1,108 +1,118 @@
 # CLAUDE.md
 
-Claude Code がこのリポジトリで作業する際の方針を定義します。
+Defines the guidelines for Claude Code when working in this repository.
 
-## プロジェクト概要
+## Project Overview
 
-YouTube ライブ動画を自動録画・ダウンロードする Docker ベースのアプリケーション。次の 2 サービスで構成されます。
+A Docker-based application that automatically records and downloads YouTube live videos. It consists of the following two services.
 
-- **recorder**（Python/Bash・リポジトリルート）: `yt-dlp` と `ffmpeg` でライブ配信を録画する。ロジックは `entrypoint.sh`。
-- **watch-new-movie**（Node.js/TypeScript・`watch-new-movie/`）: 録画完了した MP4 を検知して Discord へ通知する。
+- **recorder** (Python/Bash, repository root): Records live streams with `yt-dlp` and `ffmpeg`. The logic lives in `entrypoint.sh`.
+- **watch-new-movie** (Node.js/TypeScript, `watch-new-movie/`): Detects finished MP4 recordings and notifies Discord.
 
-通知配信に使う `discord-deliver` は外部 Docker イメージであり、本リポジトリにソースは含まれません。
+`discord-deliver`, used for notification delivery, is an external Docker image; its source is not included in this repository.
 
-## 開発コマンド
+## Development Commands
 
-Node.js アプリのコマンドは `watch-new-movie/` ディレクトリで実行します。
+Run Node.js app commands from the `watch-new-movie/` directory.
 
 ```bash
 cd watch-new-movie
-yarn install         # 依存インストール
-yarn dev             # 開発モード（ts-node-dev で自動リロード）
-yarn build           # ts-node で src/main.ts を直接実行
-yarn start           # コンパイル済み dist/main.js を実行
-yarn compile         # tsc -p . でコンパイル（dist/ 出力）
-yarn compile:test    # tsc --noEmit（型チェックのみ）
-yarn lint            # prettier + eslint + tsc を並列実行
-yarn fix             # prettier --write と eslint --fix
+yarn install         # install dependencies
+yarn dev             # dev mode (auto-reload via ts-node-dev)
+yarn build           # run src/main.ts directly via ts-node
+yarn start           # run the compiled dist/main.js
+yarn compile         # compile with tsc -p . (outputs to dist/)
+yarn compile:test    # tsc --noEmit (type check only)
+yarn lint            # run prettier + eslint + tsc in parallel
+yarn fix             # prettier --write and eslint --fix
 ```
 
-Docker はリポジトリルートで操作します。
+Run Docker commands from the repository root.
 
 ```bash
-docker compose up --build   # ビルドして起動
-docker compose up -d        # バックグラウンド起動
-docker compose logs -f      # ログ確認
-docker compose down         # 停止
+docker compose up --build   # build and start
+docker compose up -d        # start in background
+docker compose logs -f      # view logs
+docker compose down         # stop
 ```
 
-## アーキテクチャと主要ファイル
+## Architecture and Key Files
 
 ```
 .
-├── .github/workflows/          # CI/CD ワークフロー
+├── .github/workflows/          # CI/CD workflows
+├── scripts/                    # CI helper scripts (dependency-free)
 ├── watch-new-movie/
-│   └── src/main.ts             # Discord 通知ロジック（唯一のアプリソース）
-├── Dockerfile                  # recorder 用（python:3-slim + yt-dlp/ffmpeg）
-├── entrypoint.sh               # recorder のメインロジック
-├── docker-compose.yml          # 3 サービスのオーケストレーション
-└── renovate.json               # Renovate 設定
+│   └── src/main.ts             # Discord notification logic (the only app source file)
+├── Dockerfile                  # for recorder (python:3-slim + yt-dlp/ffmpeg)
+├── entrypoint.sh               # main logic for recorder
+├── docker-compose.yml          # orchestration of 3 services
+└── renovate.json               # Renovate configuration
 ```
 
-`watch-new-movie/src/main.ts` の動作:
+Behavior of `watch-new-movie/src/main.ts`:
 
-- `/data/` 配下の各ディレクトリから MP4 ファイルを走査する。
-- 中間フォーマットファイル（`.f140` `.f248` `.f299`）は除外する。
-- `/data/notified.json` で通知済みキー（`dirname/filename`）を管理する。
-- 初回実行時（`notified.json` が空）は通知せず、既存ファイルを通知済みとして初期化する。
-- 通知は `http://discord-deliver` へ POST する。成功時は緑（`0x00ff00`）、`main()` 全体のエラー時は赤（`0xff0000`）の Embed。
+- Scans each directory under `/data/` for MP4 files.
+- Excludes intermediate format files (`.f140`, `.f248`, `.f299`).
+- Tracks notified keys (`dirname/filename`) in `/data/notified.json`. Do not remove this idempotency check — it is what prevents duplicate Discord notifications on every scan.
+- On the first run (`notified.json` is empty), does not notify and initializes existing files as already notified. This is intentional bootstrap behavior, not a bug to fix.
+- Notifies by POSTing to `http://discord-deliver`. Uses a green (`0x00ff00`) Embed on success, and a red (`0xff0000`) Embed on any error from `main()`.
 
-## コーディング規約
+## Coding Conventions
 
-- **会話言語**: 日本語。**コード内コメント / JSDoc**: 日本語。**エラーメッセージ**: 英語。
-- 日本語と英数字の間には半角スペースを入れる。
-- 関数・インターフェースには日本語 JSDoc を付ける。
-- TypeScript は strict 前提。`skipLibCheck` を有効にして型エラーを回避してはならない。
-- 設定はハードコードせず環境変数で管理する。
-- フォーマットは Prettier（`.prettierrc.yml`）、Lint は ESLint（`eslint.config.mjs`、`@book000/eslint-config` を利用）に従う。
+- Project language: English is the primary language for all project artifacts (code, comments, commit messages, PR titles/bodies, and documentation). The only exception is direct conversation with Claude Code itself, which follows the user's personal/global instructions.
+- Code comments / JSDoc: English. Error messages: English.
+- Shell/script output (recorder logs, `entrypoint.sh` messages) is English, without emoji.
+- Functions and interfaces must have English JSDoc.
+- TypeScript assumes strict mode. Never enable `skipLibCheck` to bypass type errors.
+- Manage configuration via environment variables, not hardcoded values.
+- Follow Prettier (`.prettierrc.yml`) for formatting and ESLint (`eslint.config.mjs`, using `@book000/eslint-config`) for linting.
 
-## テスト
+## Testing
 
-テストフレームワークは未導入。品質は次で担保する。
+No test framework is set up. Quality is ensured by the following.
 
-- `yarn lint` と `yarn compile:test` がエラーなく通ること。
-- GitHub Actions CI が成功すること。
-- Docker Compose での手動動作確認。
+- `yarn lint` and `yarn compile:test` pass without errors.
+- GitHub Actions CI succeeds.
+- Manual verification via Docker Compose.
 
-## Git / コミット
+## Git / Commits
 
-- コミットメッセージは [Conventional Commits](https://www.conventionalcommits.org/)（`<type>(<scope>): <description>`、`<description>` は日本語）。例: `feat: Discord 通知機能を追加`。
-- ブランチは [Conventional Branch](https://conventional-branch.github.io) 短縮形（`feat`, `fix`, …）。
-- Renovate が作成した PR には追加コミットや更新を行わない。
-- コミット前に機密情報（トークン・パスワード・内部 URL）が含まれないことを確認する。
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (`<type>(<scope>): <description>`, `<description>` in English). Example: `feat: add Discord notification feature`.
+- Branches use [Conventional Branch](https://conventional-branch.github.io) short form (`feat`, `fix`, …).
+- Do not add commits or updates to PRs created by Renovate.
+- Before committing, confirm no sensitive information (tokens, passwords, internal URLs) is included.
+- PR titles and bodies must be in English (enforced by `check-pr-language.yml`).
 
-## リポジトリ固有
+## Security
 
-- **Docker Hub**: `book000/youtube-live-recorder`（recorder）と `book000/youtube-live-recorder-watch-new-movie`（Node.js）の 2 イメージを公開。
-- **Node.js バージョン**: `watch-new-movie/.node-version` で固定。
-- **yt-dlp バージョン**: ルート `Dockerfile` の `ENV YT_DLP_VERSION` を Renovate が管理。
-- **Deno バージョン**: ルート `Dockerfile` の `ENV DENO_VERSION` を Renovate が管理。yt-dlp が JavaScript ランタイムとして使用する。
+- Never commit real values for `recorder.env` or `discord-deliver.env` (both `.gitignore`d).
+- Never log credential or token values, even in debug output.
+
+## Repository Specifics
+
+- **Docker Hub**: Publishes two images, `book000/youtube-live-recorder` (recorder) and `book000/youtube-live-recorder-watch-new-movie` (Node.js).
+- **Node.js version**: Pinned in `watch-new-movie/.node-version`.
+- **yt-dlp version**: Managed by Renovate via `ENV YT_DLP_VERSION` in the root `Dockerfile`.
+- **Deno version**: Managed by Renovate via `ENV DENO_VERSION` in the root `Dockerfile`. Used by yt-dlp as a JavaScript runtime.
 - **GitHub Actions**:
-  - `nodejs-ci.yml`: `book000/templates` の再利用可能ワークフローで `watch-new-movie` をビルド。
-  - `docker.yml`: 両 Docker イメージのビルド/公開。
-  - `shell-ci.yml`: ShellCheck。
-  - `hadolint-ci.yml`: Dockerfile Lint。
-  - `add-reviewer.yml`: レビュアー自動割り当て。
-- **環境設定ファイル**（いずれも `.gitignore` 対象）:
-  - `recorder.env`: 録画対象設定（`TARGET`、`CHANNEL`/`PLAYLIST`、`TITLE_FILTER`）。`TARGET` は必須で保存先ディレクトリ名になる。
-  - `discord-deliver.env`: Discord 通知設定。
+  - `nodejs-ci.yml`: Builds `watch-new-movie` via `book000/templates`'s reusable workflow.
+  - `docker.yml`: Builds/publishes both Docker images.
+  - `shell-ci.yml`: ShellCheck.
+  - `hadolint-ci.yml`: Dockerfile lint.
+  - `add-reviewer.yml`: Automatic reviewer assignment.
+  - `check-pr-language.yml`: Fails the PR if its title or body is mostly Japanese.
+- **Environment configuration files** (all `.gitignore`d):
+  - `recorder.env`: Recording target settings (`TARGET`, `CHANNEL`/`PLAYLIST`, `TITLE_FILTER`). `TARGET` is required and becomes the save-destination directory name.
+  - `discord-deliver.env`: Discord notification settings.
 
-## ドキュメント更新
+## Documentation Updates
 
-機能・依存・設定を変更したら、関連ドキュメントを即時更新する。
+When changing a feature, dependency, or configuration, immediately update the related documentation.
 
-- `README.md`: 機能や使い方の変更時。
-- `watch-new-movie/package.json`: 依存・スクリプトの変更時。
-- `docker-compose.yml`: サービス構成の変更時。
-- `watch-new-movie/.node-version`: Node.js バージョンの変更時。
-- このファイル / `.github/copilot-instructions.md`: 作業方針やルールの変更時。
+- `README.md`: When features or usage change.
+- `watch-new-movie/package.json`: When dependencies or scripts change.
+- `docker-compose.yml`: When service composition changes.
+- `watch-new-movie/.node-version`: When the Node.js version changes.
+- This file / `.github/copilot-instructions.md`: When work policy or rules change.
+- When changing the Discord notification embed format/fields or the `notified.json` schema in `watch-new-movie/src/main.ts`, update both `README.md`'s usage section and this file's `watch-new-movie/src/main.ts` behavior bullets in the same change.
