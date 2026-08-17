@@ -1,34 +1,34 @@
-# GitHub Copilot レビュー指示
+# GitHub Copilot Review Instructions
 
-GitHub Copilot がこのリポジトリの Pull Request をレビューする際の指針です。以下の観点を優先し、既知の非問題を誤検知として指摘しないでください。
+Guidelines for GitHub Copilot when reviewing pull requests in this repository. Prioritize the following perspectives and do not flag the known non-issues below as false positives.
 
-## プロジェクト前提
+## Project Assumptions
 
-- 2 サービス構成: `recorder`（Python/Bash・ルートの `entrypoint.sh`、`yt-dlp`/`ffmpeg` 使用）と `watch-new-movie`（Node.js/TypeScript）。
-- `watch-new-movie` は `/data/` 配下の MP4 を検知し `http://discord-deliver`（Docker Compose のサービス名）へ通知する。
-- Node.js アプリのソースは `watch-new-movie/src/main.ts` のみ。
+- Two-service composition: `recorder` (Python/Bash, root `entrypoint.sh`, uses `yt-dlp`/`ffmpeg`) and `watch-new-movie` (Node.js/TypeScript).
+- `watch-new-movie` detects MP4 files under `/data/` and notifies `http://discord-deliver` (a Docker Compose service name).
+- The only Node.js app source is `watch-new-movie/src/main.ts`.
 
-## レビューで重視する点
+## Review Priorities
 
-- **言語規約**: レビューコメントは日本語。コード内コメント・JSDoc は日本語、エラーメッセージは英語。日本語と英数字の間に半角スペースがあるか。
-- **型安全性**: TypeScript は strict 前提。`any` の追加、`skipLibCheck` の有効化、型エラーの握り潰しは指摘する。新規の関数・インターフェースに日本語 JSDoc があるか確認する。
-- **エラーハンドリング**: 通知失敗は握り潰す設計だが（下記参照）、ファイル走査・JSON 読み書きなど新規追加ロジックの例外が握り潰されていないか確認する。
-- **設定のハードコード**: 新たに追加される設定値は環境変数経由か。トークン・Webhook URL・認証情報がコードや設定ファイルに直書きされていないか。
-- **シェルスクリプト**: `entrypoint.sh` の変更では、変数の未クオート展開や `TARGET` 等の入力検証が崩れていないか。ShellCheck 準拠か。
-- **Dockerfile**: hadolint 準拠か。ベースイメージやパッケージ導入の変更が妥当か。
-- **通知フォーマット**: Discord Embed の色（成功 `0x00ff00` / エラー `0xff0000`）やフィールド構造を壊していないか。
+- **Language conventions**: Review comments are in English. Code comments / JSDoc are in English, error messages are in English.
+- **Type safety**: TypeScript assumes strict mode. Flag added `any`, enabling `skipLibCheck`, or suppressed type errors. Confirm new functions/interfaces have English JSDoc.
+- **Error handling**: Notification failures are intentionally swallowed (see below), but check that exceptions in newly added logic (file scanning, JSON read/write, etc.) are not silently swallowed.
+- **Hardcoded configuration**: Confirm newly added configuration values go through environment variables. Check that tokens, webhook URLs, or credentials are not hardcoded in code or config files.
+- **Shell scripts**: For `entrypoint.sh` changes, check for unquoted variable expansions and whether input validation (e.g. for `TARGET`) is broken. Confirm ShellCheck compliance.
+- **Dockerfile**: Confirm hadolint compliance. Check whether base image or package changes are appropriate.
+- **Notification format**: Check that the Discord Embed colors (success `0x00ff00` / error `0xff0000`) and field structure are not broken.
 
-## 指摘しない既知の非問題
+## Known Non-Issues (do not flag)
 
-- **テストの欠如**: テストフレームワークは未導入。ユニットテストの追加を一律に要求しない。
-- **通知呼び出しの `.catch(() => null)`**: `axios.post('http://discord-deliver', …).catch(() => null)` は通知失敗でアプリを止めない意図的な設計。
-- **`http://discord-deliver` のハードコード**: Docker Compose のサービス名であり、秘密情報でも設定漏れでもない。
-- **`/data/` の絶対パス**: コンテナ内の固定マウント先で意図的。
-- **中間フォーマットの除外**: `.f140` `.f248` `.f299` の除外や単純な `.includes` 判定は既知の仕様。
-- **依存バージョン**: `package.json` や `Dockerfile`（`YT_DLP_VERSION` 含む）のバージョンは Renovate が管理。「古い依存」としての指摘は不要。
-- **`entrypoint.sh` の `# shellcheck disable=...` コメント**: 検討済みの意図的な抑制。
+- **Lack of tests**: No test framework is set up. Do not uniformly demand unit tests.
+- **`.catch(() => null)` on notification calls**: `axios.post('http://discord-deliver', …).catch(() => null)` is an intentional design that prevents notification failures from stopping the app.
+- **Hardcoded `http://discord-deliver`**: This is a Docker Compose service name, not a secret or a missing config value.
+- **Absolute path `/data/`**: This is an intentional fixed mount point inside the container.
+- **Exclusion of intermediate formats**: The exclusion of `.f140`, `.f248`, `.f299` and simple `.includes` checks are known, intentional specification.
+- **Dependency versions**: Versions in `package.json` and `Dockerfile` (including `YT_DLP_VERSION`) are managed by Renovate. No need to flag them as "outdated dependencies".
+- **`# shellcheck disable=...` comments in `entrypoint.sh`**: These are deliberate, already-considered suppressions.
 
-## 規約リファレンス
+## Convention Reference
 
-- コミット: [Conventional Commits](https://www.conventionalcommits.org/)（`<description>` は日本語）。ブランチ: [Conventional Branch](https://conventional-branch.github.io) 短縮形。
-- Lint/Format: ESLint（`watch-new-movie/eslint.config.mjs`）と Prettier（`watch-new-movie/.prettierrc.yml`）に準拠。CI は `yarn lint` と `yarn compile:test` 相当を実行する。
+- Commits: [Conventional Commits](https://www.conventionalcommits.org/) (`<description>` in English). Branches: [Conventional Branch](https://conventional-branch.github.io) short form.
+- Lint/Format: Follows ESLint (`watch-new-movie/eslint.config.mjs`) and Prettier (`watch-new-movie/.prettierrc.yml`). CI runs the equivalent of `yarn lint` and `yarn compile:test`.
