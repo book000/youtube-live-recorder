@@ -41,6 +41,7 @@ docker compose down         # stop
 ```
 .
 ├── .github/workflows/          # CI/CD workflows
+├── scripts/                    # CI helper scripts (dependency-free)
 ├── watch-new-movie/
 │   └── src/main.ts             # Discord notification logic (the only app source file)
 ├── Dockerfile                  # for recorder (python:3-slim + yt-dlp/ffmpeg)
@@ -53,13 +54,15 @@ Behavior of `watch-new-movie/src/main.ts`:
 
 - Scans each directory under `/data/` for MP4 files.
 - Excludes intermediate format files (`.f140`, `.f248`, `.f299`).
-- Tracks notified keys (`dirname/filename`) in `/data/notified.json`.
-- On the first run (`notified.json` is empty), does not notify and initializes existing files as already notified.
+- Tracks notified keys (`dirname/filename`) in `/data/notified.json`. Do not remove this idempotency check — it is what prevents duplicate Discord notifications on every scan.
+- On the first run (`notified.json` is empty), does not notify and initializes existing files as already notified. This is intentional bootstrap behavior, not a bug to fix.
 - Notifies by POSTing to `http://discord-deliver`. Uses a green (`0x00ff00`) Embed on success, and a red (`0xff0000`) Embed on any error from `main()`.
 
 ## Coding Conventions
 
-- **Conversation language**: English. **Code comments / JSDoc**: English. **Error messages**: English.
+- Project language: English is the primary language for all project artifacts (code, comments, commit messages, PR titles/bodies, and documentation). The only exception is direct conversation with Claude Code itself, which follows the user's personal/global instructions.
+- Code comments / JSDoc: English. Error messages: English.
+- Shell/script output (recorder logs, `entrypoint.sh` messages) is English, without emoji.
 - Functions and interfaces must have English JSDoc.
 - TypeScript assumes strict mode. Never enable `skipLibCheck` to bypass type errors.
 - Manage configuration via environment variables, not hardcoded values.
@@ -79,6 +82,12 @@ No test framework is set up. Quality is ensured by the following.
 - Branches use [Conventional Branch](https://conventional-branch.github.io) short form (`feat`, `fix`, …).
 - Do not add commits or updates to PRs created by Renovate.
 - Before committing, confirm no sensitive information (tokens, passwords, internal URLs) is included.
+- PR titles and bodies must be in English (enforced by `check-pr-language.yml`).
+
+## Security
+
+- Never commit real values for `recorder.env` or `discord-deliver.env` (both `.gitignore`d).
+- Never log credential or token values, even in debug output.
 
 ## Repository Specifics
 
@@ -92,6 +101,7 @@ No test framework is set up. Quality is ensured by the following.
   - `shell-ci.yml`: ShellCheck.
   - `hadolint-ci.yml`: Dockerfile lint.
   - `add-reviewer.yml`: Automatic reviewer assignment.
+  - `check-pr-language.yml`: Fails the PR if its title or body is mostly Japanese.
 - **Environment configuration files** (all `.gitignore`d):
   - `recorder.env`: Recording target settings (`TARGET`, `CHANNEL`/`PLAYLIST`, `TITLE_FILTER`). `TARGET` is required and becomes the save-destination directory name.
   - `discord-deliver.env`: Discord notification settings.
@@ -105,3 +115,4 @@ When changing a feature, dependency, or configuration, immediately update the re
 - `docker-compose.yml`: When service composition changes.
 - `watch-new-movie/.node-version`: When the Node.js version changes.
 - This file / `.github/copilot-instructions.md`: When work policy or rules change.
+- When changing the Discord notification embed format/fields or the `notified.json` schema in `watch-new-movie/src/main.ts`, update both `README.md`'s usage section and this file's `watch-new-movie/src/main.ts` behavior bullets in the same change.
