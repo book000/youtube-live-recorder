@@ -2,6 +2,8 @@
 // Dependency-free Node.js ESM script intended to be run from CI via
 // `pull_request` (see .github/workflows/check-pr-language.yml).
 
+import { fileURLToPath } from 'node:url'
+
 // Threshold (inclusive) above which the text is considered "mostly Japanese".
 const JAPANESE_RATIO_THRESHOLD = 0.8
 
@@ -82,7 +84,7 @@ export function checkPullRequestLanguage(title, body) {
 }
 
 // Only run as a CLI check when executed directly (not when imported by the test file).
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
   const title = process.env.PR_TITLE ?? ''
   const body = process.env.PR_BODY ?? ''
 
