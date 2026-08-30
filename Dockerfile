@@ -13,7 +13,7 @@ RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/download/${YT_DLP_VERSION}
     chmod a+rx /usr/local/bin/yt-dlp
 
 # renovate: datasource=github-releases depName=denoland/deno versioning=loose
-ENV DENO_VERSION=v2.9.5
+ENV DENO_VERSION=v2.9.6
 ARG TARGETARCH
 RUN case "${TARGETARCH}" in \
       amd64) DENO_ARCH=x86_64-unknown-linux-gnu ;; \
