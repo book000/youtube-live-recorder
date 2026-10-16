@@ -2,16 +2,16 @@
 # yarn lockfile v1
 
 
-"@book000/eslint-config@1.16.95":
-  version "1.16.95"
-  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.16.95.tgz#e9934befba4b5e1f59184c67571acca7bb96fbde"
-  integrity sha512-nqSKbhQ5cxkYQn+RNxkS/169kcsbgg620sR49LIo55XMSHAdRoDadJKYCPO6NL92/PaqnH8welIE1lx9kVOyEg==
+"@book000/eslint-config@1.16.97":
+  version "1.16.97"
+  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.16.97.tgz#fb212f009b36ab761c813011620089546e41816f"
+  integrity sha512-WbVOBNCEeV7/LkgjDvQzkJNHrwBmzmsVqofAC5zrKv6HvmhwW/xxXJ3FpFPxyWWYXaDortyvIRkjtX3nZ0+GZg==
   dependencies:
     "@typescript-eslint/parser" "8.71.2"
     eslint-config-prettier "10.1.8"
     eslint-plugin-unicorn "78.0.0"
     globals "17.13.0"
-    neostandard "0.14.0"
+    neostandard "0.14.1"
     typescript-eslint "8.71.2"
 
 "@cacheable/memory@^2.2.0":
@@ -2258,10 +2258,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-neostandard@0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/neostandard/-/neostandard-0.14.0.tgz#371c274057a73bbbd94d3c88163d734b6caf22fc"
-  integrity sha512-11ZZgQdQrzdMqAo494FJzrSh5/lNtUyrx1mz7BVXcA9EpXCEBOz4WhVz5sG79VvoBG/4L5lZ8xjfHxng95CtFQ==
+neostandard@0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/neostandard/-/neostandard-0.14.1.tgz#881c1910b354157ec80860da63a82c9ac1720509"
+  integrity sha512-cEGi7ADMWJRTcdsZeDXCyA1ZeJLQPBq6HP9z9CE1ysu+CJOKYt59ADG0BT6ETonuF6xNXZbMiNc8S8prYys4aQ==
   dependencies:
     "@humanwhocodes/gitignore-to-minimatch" "^1.0.2"
     "@stylistic/eslint-plugin" "5.10.0"
