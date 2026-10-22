@@ -12,7 +12,7 @@ Guidelines for GitHub Copilot when reviewing pull requests in this repository. P
 
 - **Language conventions**: Review comments are in English. Code comments / JSDoc are in English, error messages are in English. Shell/script output (recorder logs, `entrypoint.sh` messages) is English, without emoji.
 - **Type safety**: TypeScript assumes strict mode. Flag added `any`, enabling `skipLibCheck`, or suppressed type errors. Confirm new functions/interfaces have English JSDoc.
-- **Error handling**: Notification failures are intentionally swallowed (see below), but check that exceptions in newly added logic (file scanning, JSON read/write, etc.) are not silently swallowed.
+- **Error handling**: A failed notification POST must not mark the movie as notified, and must make the run fail (red Embed, exit code 1) so it is retried on the next run. Check that exceptions in newly added logic (file scanning, JSON read/write, etc.) are not silently swallowed.
 - **Hardcoded configuration**: Confirm newly added configuration values go through environment variables. Check that tokens, webhook URLs, or credentials are not hardcoded in code or config files.
 - **Shell scripts**: For `entrypoint.sh` changes, check for unquoted variable expansions and whether input validation (e.g. for `TARGET`) is broken. Confirm ShellCheck compliance.
 - **Dockerfile**: Confirm hadolint compliance. Check whether base image or package changes are appropriate.
@@ -22,7 +22,7 @@ Guidelines for GitHub Copilot when reviewing pull requests in this repository. P
 ## Known Non-Issues (do not flag)
 
 - **Lack of tests**: No test framework is set up. Do not uniformly demand unit tests.
-- **`.catch(() => null)` on notification calls**: `axios.post('http://discord-deliver', …).catch(() => null)` is an intentional design that prevents notification failures from stopping the app.
+- **`.catch(() => null)` on the error-reporter POST**: The red-Embed POST in the top-level handler of `watch-new-movie/src/main.ts` is best effort by design, so a failing error report cannot mask the original error. This does not apply to the per-movie notification POST, whose failures must be handled.
 - **Hardcoded `http://discord-deliver`**: This is a Docker Compose service name, not a secret or a missing config value.
 - **Absolute path `/data/`**: This is an intentional fixed mount point inside the container.
 - **Exclusion of intermediate formats**: The exclusion of `.f140`, `.f248`, `.f299` and simple `.includes` checks are known, intentional specification.

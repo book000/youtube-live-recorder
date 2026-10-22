@@ -54,9 +54,9 @@ Behavior of `watch-new-movie/src/main.ts`:
 
 - Scans each directory under `/data/` for MP4 files.
 - Excludes intermediate format files (`.f140`, `.f248`, `.f299`).
-- Tracks notified keys (`dirname/filename`) in `/data/notified.json`. Do not remove this idempotency check — it is what prevents duplicate Discord notifications on every scan.
+- Tracks notified keys (`dirname/filename`) in `/data/notified.json`. Do not remove this idempotency check — it is what prevents duplicate Discord notifications on every scan. A key is stored only after its POST succeeded (or was suppressed on the first run); a movie whose POST failed is not stored and is retried on the next run. The file is rewritten atomically (temporary file plus rename) after each successful notification.
 - On the first run (`notified.json` is empty), does not notify and initializes existing files as already notified. This is intentional bootstrap behavior, not a bug to fix.
-- Notifies by POSTing to `http://discord-deliver`. Uses a green (`0x00ff00`) Embed on success, and a red (`0xff0000`) Embed on any error from `main()`.
+- Notifies by POSTing to `http://discord-deliver`. Uses a green (`0x00ff00`) Embed on success, and a red (`0xff0000`) Embed on any error from `main()`. When any movie's POST fails, the remaining movies are still processed, then `main()` throws, the red Embed is sent (best effort), and the process exits with code 1.
 
 ## Coding Conventions
 
