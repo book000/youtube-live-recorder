@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-"@book000/eslint-config@1.16.105":
-  version "1.16.105"
-  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.16.105.tgz#53c9b528ec3368a763bd64111c7a961935b4717a"
-  integrity sha512-RbvOGfAxQ0YHWV7/rphLFLQN+GzzKNQ1SjY0C0Cb4+KNnEH19AF/BN+1/Q4NlLOLgmlQhcp8IUhpFHidg/jJ0g==
+"@book000/eslint-config@1.16.106":
+  version "1.16.106"
+  resolved "https://registry.yarnpkg.com/@book000/eslint-config/-/eslint-config-1.16.106.tgz#c95e8272a622ad03e95f9089d83bfd6539103f24"
+  integrity sha512-w27GBKKCMdT0OO9GpUk/IUbjrsk7pgiJOhwgco6SVzdoC5I2bh8GtQRO6FC0k0v3h6ebJokMeBqZjnhwj4Pj8A==
   dependencies:
     "@typescript-eslint/parser" "8.72.0"
     eslint-config-prettier "10.1.8"
-    eslint-plugin-unicorn "78.0.0"
+    eslint-plugin-unicorn "79.0.0"
     globals "17.13.0"
     neostandard "0.14.1"
     typescript-eslint "8.72.0"
@@ -1059,10 +1059,10 @@ eslint-plugin-promise@7.3.0, eslint-plugin-promise@^7.3.0:
   dependencies:
     "@eslint-community/eslint-utils" "^4.4.0"
 
-eslint-plugin-unicorn@78.0.0:
-  version "78.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-unicorn/-/eslint-plugin-unicorn-78.0.0.tgz#d6fa889af4e514b0f9dcc8184b2d57b945cab220"
-  integrity sha512-XTDqxcJeAmh2lhgU75TpuMDdFtPDnAU+DCW56nR5UzXTG+uOyvOGjV80O11my7kNb2bYSCPlWa8c4K8/rwlYog==
+eslint-plugin-unicorn@79.0.0:
+  version "79.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-unicorn/-/eslint-plugin-unicorn-79.0.0.tgz#d522dee73be6a4a7e4c695e18301e04ce6ce4d31"
+  integrity sha512-k7MWrjoVTVCnjKpgaxBuScPNSPomLvDpsd9uADpWrIFzrnwiec27eWhGrmmyuTj1bC3xVNYP4QfG3MEzEw6ifg==
   dependencies:
     "@eslint-community/eslint-utils" "^4.10.1"
     "@eslint/css-tree" "^4.1.1"
