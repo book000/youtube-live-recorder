@@ -1,10 +1,8 @@
 FROM node:lts
 
-# hadolint ignore=DL3008
-RUN apt-get update && \
-  apt-get install --no-install-recommends -y \
-  yarn \
-  && rm -rf /var/lib/apt/lists/*
+# node:lts no longer ships yarn (and Debian has no yarn package)
+# hadolint ignore=DL3016
+RUN npm install -g yarn@1.22.22
 
 WORKDIR /app
 
