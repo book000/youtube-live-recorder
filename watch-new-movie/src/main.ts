@@ -1,11 +1,17 @@
 import fs from 'node:fs'
 import axios from 'axios'
 
+/** A recorded movie file found under `/data/<dirname>/`. */
 interface Movie {
   dirname: string
   filename: string
 }
 
+/**
+ * Lists MP4 files directly under each directory in `/data/`, skipping
+ * yt-dlp intermediate format files (`.f140`, `.f248`, `.f299`).
+ * @returns Movies found in the current scan, notified or not
+ */
 function getMovies(): Movie[] {
   const movies: Movie[] = []
 
