@@ -1,7 +1,7 @@
 {
-  "name": "youtube-livee-recorder-watch-new-movie",
+  "name": "youtube-live-recorder-watch-new-movie",
   "version": "1.4.2",
-  "description": "",
+  "description": "Watch for newly recorded movies",
   "license": "MIT",
   "author": "Tomachi",
   "private": true,
