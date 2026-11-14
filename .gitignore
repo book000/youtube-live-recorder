@@ -3,3 +3,4 @@ data/*
 !src/data/.gitkeep
 node_modules/
 dist/
+*.tsbuildinfo
