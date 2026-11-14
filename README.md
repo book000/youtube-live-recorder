@@ -24,7 +24,7 @@ Either `CHANNEL` or `PLAYLIST` is required. If both are set, `PLAYLIST` is used.
 - `TARGET` (required): A unique ID for the target. It is used as the name of the save directory.
 - `CHANNEL` (optional): The ID of the channel to record. The channel's `/live` page is watched.
 - `PLAYLIST` (optional): The ID of the playlist to record.
-- `TITLE_FILTER` (optional): Passed to `yt-dlp --match-title`: only videos whose title matches this regular expression (case-insensitive search) are downloaded. The value is word-split by the shell, so it must not contain whitespace.
+- `TITLE_FILTER` (optional): Passed to `yt-dlp --match-title`: only videos whose title matches this regular expression (case-insensitive search) are downloaded. The value is passed to `yt-dlp` as a single argument, so it may contain whitespace and glob characters.
 - `OUTPUT_FILENAME_PATTERN` (optional): The `yt-dlp` output template for the file name, for example `%(title)s-%(id)s.%(ext)s` to avoid overwriting recordings with the same title. Defaults to `%(title)s.%(ext)s`.
 
 On the first start (when `data/recorded/<TARGET>` does not exist), the video IDs that yt-dlp lists for the target URL are added to that download archive and are not downloaded. For `PLAYLIST` this is every video currently in the playlist; for `CHANNEL` the watched URL is the channel's `/live` page, so normally only the stream that is live at that moment is archived (if the channel is not live, nothing is archived).
