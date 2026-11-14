@@ -50,7 +50,7 @@ Before opening a PR, `yarn lint` and `yarn compile:test` must pass in `watch-new
 - Scans each directory directly under `/data/` for `.mp4` files, skipping names containing `.f140`, `.f248` or `.f299` (yt-dlp intermediate formats).
 - Tracks notified keys (`dirname/filename`) in `/data/notified.json`. Do not remove this idempotency check; it prevents duplicate notifications on every scan.
 - A key is stored only after its POST succeeded; a movie whose POST failed is retried on the next run. The file is rewritten atomically (temporary file plus rename).
-- While `notified.json` is missing or empty nothing is notified: the scan records the files it finds as already notified (the bootstrap). This is intentional bootstrap behavior, not a bug.
+- While `notified.json` is missing (the first run) nothing is notified: the scan records the files it finds as already notified and writes the file, even when it finds none (the bootstrap). An existing empty list is not a first run. This is intentional bootstrap behavior, not a bug.
 - Notifications are POSTed to `http://discord-deliver` (the Compose service name): a green (`0x00ff00`) Embed per new movie, and a red (`0xff0000`) Embed from the top-level handler for any error from `main()`. When any movie's POST fails, the remaining movies are still processed, then `main()` throws, the red Embed is sent (best effort), and the process exits with code 1.
 - When changing the Embed fields or the `notified.json` schema, update this section and the relevant parts of `README.md` in the same change.
 

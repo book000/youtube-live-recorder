@@ -58,7 +58,8 @@ async function main() {
   const notified: string[] = fs.existsSync('/data/notified.json')
     ? JSON.parse(fs.readFileSync('/data/notified.json').toString())
     : []
-  const init = notified.length === 0
+  // Detect the first run by the missing file: an empty list is a valid state.
+  const init = !fs.existsSync('/data/notified.json')
   const failed: string[] = []
   for (const movie of movies) {
     const key = movie.dirname + '/' + movie.filename

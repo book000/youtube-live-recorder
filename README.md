@@ -7,7 +7,7 @@ Records YouTube live streams with `yt-dlp` and notifies Discord when a recording
 `docker-compose.yml` defines three services. `recorder` and `watch-new-movie` share the `./data` bind mount (`/data` in the containers).
 
 - `recorder`: records the target channel or playlist. Settings come from `recorder.env`.
-- `watch-new-movie`: checks `/data/` once per hour for new `.mp4` files and sends a notification through `discord-deliver`. Notified files are tracked in `/data/notified.json`. While that file is missing or an empty list, nothing is notified: the first scan that finds `.mp4` files records them as already notified, so the first recording on a fresh install is not notified.
+- `watch-new-movie`: checks `/data/` once per hour for new `.mp4` files and sends a notification through `discord-deliver`. Notified files are tracked in `/data/notified.json`. While that file is missing (the first run), nothing is notified: the first scan records the `.mp4` files it finds as already notified and creates the file, so only recordings that appear after that scan are notified.
 - `discord-deliver`: the external image `book000/discord-deliver`. Its settings come from `discord-deliver.env`; see that image for the available variables.
 
 ## Usage
