@@ -23,7 +23,7 @@ fi
 
 # check define title filter variable
 if [[ -n "${TITLE_FILTER}" ]]; then
-  TITLE_FILTER_ARG="--match-title ${TITLE_FILTER}"
+  TITLE_FILTER_ARG=(--match-title "${TITLE_FILTER}")
 fi
 
 RECORDED_FILE="/data/recorded/${TARGET}"
@@ -63,8 +63,7 @@ while :; do
     yt-dlp -U
   fi
 
-  # shellcheck disable=SC2086
-  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native --js-runtimes deno ${TITLE_FILTER_ARG} --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
+  yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native --js-runtimes deno "${TITLE_FILTER_ARG[@]}" --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
 
   # Move finished mp4 files to the parent directory (intermediate *.f*.mp4 files stay in part/)
   # shellcheck disable=SC2046
