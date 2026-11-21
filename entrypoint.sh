@@ -70,8 +70,7 @@ while :; do
 
   yt-dlp -i --live-from-start --hls-use-mpegts --hls-prefer-native --js-runtimes deno "${TITLE_FILTER_ARG[@]}" --download-archive "${RECORDED_FILE}" -f bestvideo+bestaudio --add-metadata --merge-output-format mp4 -o "${OUTPUT_DIR}" "${URL}"
 
-  # Move finished mp4 files to the parent directory (intermediate *.f*.mp4 files stay in part/)
-  # shellcheck disable=SC2046
-  find $(dirname "${OUTPUT_DIR}") -name "*.mp4" -not -name "*.f*.mp4" -exec mv {} "${MOVE_DIR}" \;
+  # Move finished mp4 files to the parent directory; numeric format files stay in part/.
+  find "$(dirname "${OUTPUT_DIR}")" -regextype posix-extended -name "*.mp4" -not -regex '.*\.f[0-9]+\.mp4' -exec mv {} "${MOVE_DIR}" \;
   sleep 5
 done
